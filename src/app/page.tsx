@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -48,7 +49,7 @@ export default function Home() {
       </div>
     );
   }
-  
+
   if (!user) return null;
 
   return (
@@ -84,9 +85,11 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="relative">
-                  <img
-                    src={user.photoURL || "/default-avatar.png"}
+                  <Image
+                    src={user?.photoURL || "/default-avatar.png"}
                     alt="Avatar"
+                    width={40}
+                    height={40}
                     className="w-10 h-10 rounded-full border-2 border-indigo-200 object-cover"
                   />
                   <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
@@ -95,14 +98,14 @@ export default function Home() {
 
               {/* Dropdown */}
               {open && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 py-2 animate-fade-in overflow-hidden">
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 animate-fade-in overflow-hidden">
                   <div className="px-4 py-3 border-b border-gray-100">
                     <p className="font-semibold text-gray-800">{user.displayName || "Usuario"}</p>
                     <p className="text-sm text-gray-500 mt-0.5">{user.email}</p>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2 mt-1"
+                    className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -185,7 +188,7 @@ export default function Home() {
               </h2>
             </div>
             <p className="text-gray-600 leading-relaxed mb-6">
-              Este es tu lienzo en blanco. Aquí puedes desarrollar tus componentes, crear tablas dinámicas, 
+              Este es tu lienzo en blanco. Aquí puedes desarrollar tus componentes, crear tablas dinámicas,
               construir dashboards interactivos o cualquier funcionalidad que necesites para tu aplicación.
             </p>
             <div className="flex flex-wrap gap-3">
