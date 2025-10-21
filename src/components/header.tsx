@@ -8,11 +8,13 @@ import Image from "next/image";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
-  const { user }  = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/9131/9131529.png";
 
   const handleLogout = async () => {
     setOpen(false);
@@ -27,7 +29,7 @@ export default function Header() {
 
   const handleMenuAction = (action: string) => {
     setOpen(false);
-    
+
     switch (action) {
       case "crear-producto":
         router.push("/products?method=create");
@@ -92,13 +94,15 @@ export default function Header() {
                 </div>
                 <div className="relative">
                   <Image
-                    src={user?.photoURL || "/default-avatar.png"}
+                    src={user?.photoURL || defaultAvatar}
                     alt="Avatar"
                     width={40}
                     height={40}
                     className="w-10 h-10 rounded-full border-2 border-indigo-200 object-cover"
                   />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
+                  {user ?
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
+                    : <></>}
                 </div>
               </button>
 
@@ -107,8 +111,8 @@ export default function Header() {
                 <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 animate-fade-in overflow-hidden">
                   {/* User Info */}
                   <div className="px-4 py-3 border-b border-gray-100">
-                    <p className="font-semibold text-gray-800">{user?.displayName || "Usuario"}</p>
-                    <p className="text-sm text-gray-500 mt-0.5">{user?.email}</p>
+                    <p className="font-semibold text-gray-800">{user?.displayName || "Invitado"}</p>
+                    <p className="text-sm text-gray-500 mt-0.5">{user?.email || "Sin sesión iniciada"}</p>
                   </div>
 
                   {/* Product Management Section */}
@@ -118,7 +122,7 @@ export default function Header() {
                         Gestión de Productos
                       </p>
                     </div>
-                    
+
                     <button
                       onClick={() => handleMenuAction("crear-producto")}
                       className="w-full text-left px-4 py-2.5 text-gray-700 hover:bg-indigo-50 transition-colors flex items-center gap-3"
@@ -166,22 +170,33 @@ export default function Header() {
                       </div>
                       <span className="font-medium">Resumen Meses</span>
                     </button>
+
                   </div>
 
-                  {/* Logout Button */}
-                  <div className="border-t border-gray-100">
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors flex items-center gap-3"
-                    >
-                      <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                      </div>
-                      <span className="font-medium">Cerrar sesión</span>
-                    </button>
-                  </div>
+                  {!user ? (
+                    <div className="p-4">
+                      <button
+                        onClick={() => router.push("/login")}
+                        className="cursor-pointer w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg font-semibold transition"
+                      >
+                        Iniciar sesión
+                      </button>
+                    </div>
+                  ) :
+                    <div className="border-t border-gray-100">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors flex items-center gap-3"
+                      >
+                        <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                          </svg>
+                        </div>
+                        <span className="font-medium">Cerrar sesión</span>
+                      </button>
+                    </div>}
+
                 </div>
               )}
             </div>

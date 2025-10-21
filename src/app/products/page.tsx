@@ -17,7 +17,7 @@ interface Producto {
 }
 
 export default function ProductsPage() {
-    const { user, loading } = useAuth();
+    const { loading } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
     const method = searchParams.get("method");
@@ -54,17 +54,11 @@ export default function ProductsPage() {
         setProductos([...productos, nuevoProducto]);
     };
 
-    useEffect(() => {
-        if (!loading && !user) router.push("/login");
-    }, [user, loading, router]);
-
     if (loading) {
         return (
             <Loading/>
         );
     }
-
-    if (!user) return null;
 
     // Vista del formulario
     if (method === "create") {
