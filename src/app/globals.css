@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+select option {
+  background-color: white;
+  color: #111827;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+select option:hover {
+  background-color: #eef2ff;
+  color: #4338ca;
+}

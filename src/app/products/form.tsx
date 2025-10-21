@@ -1,9 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
 import Header from "@/components/header";
-import Loading from "@/components/loading";
+import { twMerge } from 'tailwind-merge'
 
 interface Producto {
     tienda: string;
@@ -16,6 +15,12 @@ interface Producto {
 
 interface CreateProductProps {
     onProductCreated?: (producto: Producto & { id: number }) => void;
+}
+
+const classNames = {
+    input: 'text-black w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all',
+    select: 'appearance-none bg-white text-gray-500',
+    option: ''
 }
 
 export default function CreateProduct({ onProductCreated }: CreateProductProps) {
@@ -117,7 +122,7 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         value={form.tienda}
                                         onChange={handleChange}
                                         required
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        className={classNames.input}
                                     />
                                 </div>
                             </div>
@@ -139,8 +144,8 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         placeholder="Ej: Tubérculos"
                                         value={form.categoria}
                                         onChange={handleChange}
+                                        className={classNames.input}
                                         required
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                     />
                                 </div>
                             </div>
@@ -162,8 +167,8 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         placeholder="Ej: Papa pastusa"
                                         value={form.nombre}
                                         onChange={handleChange}
+                                        className={classNames.input}
                                         required
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                     />
                                 </div>
                             </div>
@@ -185,8 +190,8 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         placeholder="Ej: Mister Potato"
                                         value={form.marca}
                                         onChange={handleChange}
+                                        className={classNames.input}
                                         required
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                     />
                                 </div>
                             </div>
@@ -197,26 +202,51 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                     Unidad de Medida
                                 </label>
                                 <div className="relative">
+                                    {/* Ícono a la izquierda */}
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                                        <svg
+                                            className="w-5 h-5 text-gray-400"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                                            />
                                         </svg>
                                     </div>
+
                                     <select
                                         name="unidad"
                                         value={form.unidad}
                                         onChange={handleChange}
                                         required
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all appearance-none bg-white"
+                                        className={twMerge(classNames.input, classNames.select)}
                                     >
-                                        <option value="">Selecciona una unidad</option>
+                                        <option disabled value="">
+                                            Selecciona una unidad
+                                        </option>
                                         <option value="kg">Kilogramo (kg)</option>
                                         <option value="lb">Libra (lb)</option>
                                         <option value="unidad">Unidad</option>
                                     </select>
+
                                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                        <svg
+                                            className="w-5 h-5 text-gray-400"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M19 9l-7 7-7-7"
+                                            />
                                         </svg>
                                     </div>
                                 </div>
@@ -239,8 +269,8 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         onChange={handleChange}
                                         required
                                         min="0"
+                                        className={classNames.input}
                                         step="0.01"
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                                     />
                                 </div>
                             </div>
@@ -251,13 +281,13 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                             <button
                                 type="button"
                                 onClick={handleCancel}
-                                className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200"
+                                className="cursor-pointer flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200"
                             >
                                 Cancelar
                             </button>
                             <button
                                 type="submit"
-                                className="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+                                className="cursor-pointer flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
                             >
                                 Crear Producto
                             </button>
