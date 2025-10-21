@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/header";
 import { twMerge } from 'tailwind-merge'
 
@@ -25,6 +25,8 @@ const classNames = {
 
 export default function CreateProduct({ onProductCreated }: CreateProductProps) {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const productUpdating = searchParams.get("product");
 
     const [form, setForm] = useState({
         tienda: "",
@@ -33,6 +35,23 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
         marca: "",
         unidad: "",
         precio: "",
+    });
+
+    useState(() => {
+        if (productUpdating) {
+            const productosGuardados = JSON.parse(localStorage.getItem("products") || "[]");
+            const productoAEditar = productosGuardados.find((p: any) => p.id === Number(productUpdating));
+            if (productoAEditar) {
+                setForm({
+                    tienda: productoAEditar.tienda,
+                    categoria: productoAEditar.categoria,
+                    nombre: productoAEditar.nombre,
+                    marca: productoAEditar.marca,
+                    unidad: productoAEditar.unidad,
+                    precio: productoAEditar.precio.toString(),
+                });
+            }
+        }
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -95,7 +114,7 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                 </svg>
                             </div>
                             <div>
-                                <h2 className="text-2xl font-bold text-white">Crear Producto</h2>
+                                <h2 className="text-2xl font-bold text-white">{productUpdating ? 'Editar' : 'Crear'} Producto</h2>
                                 <p className="text-indigo-100 text-sm">Completa la información del nuevo producto</p>
                             </div>
                         </div>
@@ -289,7 +308,7 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                 type="submit"
                                 className="cursor-pointer flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
                             >
-                                Crear Producto
+                                {productUpdating ? 'Editar' : 'Crear'} Producto
                             </button>
                         </div>
                     </form>
