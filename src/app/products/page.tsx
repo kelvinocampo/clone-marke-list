@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/header";
-import CreateProduct from "./form";
 import Loading from "@/components/loading";
 import ConfirmModal from "@/components/confirm";
 
@@ -59,6 +58,8 @@ export default function ProductsPage() {
 
     // Cerrar dropdowns al hacer click fuera
     useEffect(() => {
+
+
         const handleClickOutside = (event: MouseEvent) => {
             if (marcaDropdownRef.current && !marcaDropdownRef.current.contains(event.target as Node) &&
                 !marcaInputRef.current?.contains(event.target as Node)) {
@@ -158,11 +159,11 @@ export default function ProductsPage() {
 
     // Redirigir a formulario
     const goToCreate = () => {
-        router.push("?method=create");
+        router.push("/products/create");
     };
 
     const handleEdit = (id: number) => {
-        router.push("?method=update&product=" + id);
+        router.push("/products/update?product=" + id);
     };
 
     // Callback cuando se crea un producto
@@ -172,15 +173,6 @@ export default function ProductsPage() {
 
     if (loading) {
         return <Loading />;
-    }
-
-    // Vista del formulario
-    if (method === "create") {
-        return <CreateProduct onProductCreated={handleProductCreated} />;
-    }
-
-    if (method === "update") {
-        return <CreateProduct onProductCreated={handleProductCreated} />;
     }
 
     const hayFiltrosActivos = searchText !== "" || selectedMarcas.length > 0 || selectedTiendas.length > 0;
@@ -440,7 +432,7 @@ export default function ProductsPage() {
                             )}
                         </div>
                     ) : (
-                        <div className="grid gap-4">
+                        <div className="grid grid-cols-2 gap-4">
                             {productosFiltrados.map((p) => (
                                 <div
                                     key={p.id}
@@ -456,30 +448,42 @@ export default function ProductsPage() {
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                                         </svg>
                                                     </div>
-                                                    <div className="flex-1">
-                                                        <h3 className="text-lg font-bold text-gray-800">{p.nombre}</h3>
-                                                        <p className="text-sm text-gray-500 mt-1">Marca: {p.marca}</p>
-                                                        <div className="flex flex-wrap gap-2 mt-3">
-                                                            <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold">
-                                                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                                                </svg>
-                                                                {p.tienda}
-                                                            </span>
-                                                            <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-semibold">
-                                                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                                                                </svg>
-                                                                {p.categoria}
-                                                            </span>
-                                                            <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-semibold">
-                                                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-                                                                </svg>
-                                                                {p.unidad}
-                                                            </span>
-                                                        </div>
+
+                                                    <div className="flex-1 min-w-0 flex flex-col justify-end h-12">
+                                                        <h3
+                                                            title="Titulo"
+                                                            className="capitalize font-bold text-gray-800 truncate leading-normal text-2xl"
+                                                        >
+                                                            {p.nombre}
+                                                        </h3>
                                                     </div>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2 mt-3">
+                                                    <span title="Marca" className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold">
+                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            {/* Icono de Tarjeta de Identificación / Registro */}
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                                        </svg>
+                                                        {p.marca}
+                                                    </span>
+                                                    <span title="Tienda" className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold">
+                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                        </svg>
+                                                        {p.tienda}
+                                                    </span>
+                                                    <span title="Categoria" className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-semibold">
+                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                                        </svg>
+                                                        {p.categoria}
+                                                    </span>
+                                                    <span title="Unidad" className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-semibold">
+                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                                                        </svg>
+                                                        {p.unidad}
+                                                    </span>
                                                 </div>
                                             </div>
 
@@ -491,8 +495,9 @@ export default function ProductsPage() {
                                                         ${p.precio.toLocaleString()}
                                                     </p>
                                                 </div>
-                                                <div className="flex gap-2">
+                                                <div className="flex gap-2 flex-col">
                                                     <button
+                                                        title="Editar"
                                                         onClick={() => handleEdit(p.id)}
                                                         className="cursor-pointer p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors">
                                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -500,6 +505,7 @@ export default function ProductsPage() {
                                                         </svg>
                                                     </button>
                                                     <button
+                                                        title="Eliminar"
                                                         onClick={() => handleDelete(p.id)}
                                                         className="cursor-pointer p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
                                                     >

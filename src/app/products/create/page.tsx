@@ -58,9 +58,38 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleCreate = (e: React.FormEvent) => {
+
+    const handleAction = (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (productUpdating) {
+            handleUpdate();
+        } else {
+            handleCreate();
+        }
+    };
+
+    const handleUpdate = () => {
+        const productosGuardados = JSON.parse(localStorage.getItem("products") || "[]");
+        const productosActualizados = productosGuardados.map((p: any) => {
+            if (p.id === Number(productUpdating)) {
+                return {
+                    ...p,
+                    tienda: form.tienda,
+                    categoria: form.categoria,
+                    nombre: form.nombre,
+                    marca: form.marca,
+                    unidad: form.unidad,
+                    precio: Number(form.precio),
+                };
+            }
+            return p;
+        });
+        localStorage.setItem("products", JSON.stringify(productosActualizados));
+        router.push("/products");
+    }
+
+    const handleCreate = () => {
         const nuevoProducto = {
             id: Date.now(),
             tienda: form.tienda,
@@ -121,7 +150,7 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                     </div>
 
                     {/* Formulario */}
-                    <form onSubmit={handleCreate} className="p-8">
+                    <form onSubmit={handleAction} className="p-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Tienda */}
                             <div className="space-y-2">
