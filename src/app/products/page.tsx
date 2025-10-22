@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Header from "@/components/header";
 import Loading from "@/components/loading";
 import ConfirmModal from "@/components/confirm";
@@ -21,8 +21,6 @@ interface Producto {
 export default function ProductsPage() {
     const { loading } = useAuth();
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const method = searchParams.get("method");
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [productSelected, setProductSelected] = useState<number>(0);
@@ -60,8 +58,6 @@ export default function ProductsPage() {
 
     // Cerrar dropdowns al hacer click fuera
     useEffect(() => {
-
-
         const handleClickOutside = (event: MouseEvent) => {
             if (marcaDropdownRef.current && !marcaDropdownRef.current.contains(event.target as Node) &&
                 !marcaInputRef.current?.contains(event.target as Node)) {
