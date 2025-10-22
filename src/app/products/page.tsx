@@ -5,10 +5,12 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/header";
 import Loading from "@/components/loading";
 import ConfirmModal from "@/components/confirm";
+import { truncateText } from "@/helpers/text";
 
 interface Producto {
     id: number;
     tienda: string;
+    creacion: Date;
     categoria: string;
     nombre: string;
     marca: string;
@@ -166,11 +168,6 @@ export default function ProductsPage() {
         router.push("/products/update?product=" + id);
     };
 
-    // Callback cuando se crea un producto
-    const handleProductCreated = (nuevoProducto: Producto) => {
-        setProductos([...productos, nuevoProducto]);
-    };
-
     if (loading) {
         return <Loading />;
     }
@@ -206,7 +203,7 @@ export default function ProductsPage() {
                     </div>
 
                     {/* Filtros Colapsables */}
-                    <div className="bg-white rounded-2xl shadow-lg mb-6">
+                    <div className="bg-white rounded-2xl shadow-lg mb-6 select-none">
                         {/* Header del filtro - siempre visible */}
                         <div
                             onClick={() => setShowFilters(!showFilters)}
@@ -267,7 +264,7 @@ export default function ProductsPage() {
                                                 value={searchText}
                                                 onChange={(e) => setSearchText(e.target.value)}
                                                 placeholder="Nombre del producto..."
-                                                className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
+                                                className="text-black w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
                                             />
                                         </div>
                                     </div>
@@ -288,7 +285,7 @@ export default function ProductsPage() {
                                                 onChange={(e) => setMarcaInput(e.target.value)}
                                                 onFocus={() => setShowMarcaDropdown(true)}
                                                 placeholder="Escribe una marca..."
-                                                className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
+                                                className="text-black w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
                                             />
                                             {showMarcaDropdown && marcasFiltradas.length > 0 && (
                                                 <div
@@ -348,7 +345,7 @@ export default function ProductsPage() {
                                                 onChange={(e) => setTiendaInput(e.target.value)}
                                                 onFocus={() => setShowTiendaDropdown(true)}
                                                 placeholder="Escribe una tienda..."
-                                                className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
+                                                className="text-black w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
                                             />
                                             {showTiendaDropdown && tiendasFiltradas.length > 0 && (
                                                 <div
@@ -454,82 +451,82 @@ export default function ProductsPage() {
                                                             title="Titulo"
                                                             className="capitalize font-bold text-gray-800 truncate leading-normal text-2xl"
                                                         >
-                                                            {p.nombre}
+                                                            {truncateText(p.nombre, 15)}
                                                         </h3>
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-wrap gap-2 mt-3">
-                                                    <span title="Marca" className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold">
+                                                    <span title={p.marca} className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold">
                                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            {/* Icono de Tarjeta de Identificación / Registro */}
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                                         </svg>
-                                                        {p.marca}
+                                                        {truncateText(p.marca, 15)}
                                                     </span>
-                                                    <span title="Tienda" className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold">
+                                                    <span title={p.tienda} className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold">
                                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                                         </svg>
-                                                        {p.tienda}
+                                                        {truncateText(p.tienda, 15)}
                                                     </span>
-                                                    <span title="Categoria" className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-semibold">
+                                                    <span title={p.categoria} className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-semibold">
                                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                                         </svg>
-                                                        {p.categoria}
+                                                        {truncateText(p.categoria, 15)}
                                                     </span>
-                                                    <span title="Unidad" className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-semibold">
+                                                    <span title='Unidad' className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-semibold">
                                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                                                         </svg>
-                                                        {p.unidad}
+                                                        {truncateText(p.unidad, 15)}
                                                     </span>
                                                 </div>
                                             </div>
 
                                             {/* Precio y acciones */}
                                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                                                <div className="text-right">
-                                                    <p className="text-sm text-gray-500">Precio</p>
-                                                    <p className="text-2xl font-bold text-indigo-600">
-                                                        ${p.precio.toLocaleString()}
-                                                    </p>
-                                                </div>
-                                                <div className="flex gap-2 flex-col">
-                                                    <button
-                                                        title="Editar"
-                                                        onClick={() => handleEdit(p.id)}
-                                                        className="cursor-pointer p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors">
-                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                    </button>
-                                                    <button
-                                                        title="Eliminar"
-                                                        onClick={() => handleDelete(p.id)}
-                                                        className="cursor-pointer p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
-                                                    >
-                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
+                                                <div className="text-right" title={'$' + p.precio.toLocaleString()}>
+                                                <p className="text-sm text-gray-500">Precio</p>
+                                                <p className="text-2xl font-bold text-indigo-600">
+                                                    ${p.precio.toLocaleString()}
+                                                </p>
+                                            </div>
+                                            <div className="flex gap-2 flex-col">
+                                                <button
+                                                    title="Editar"
+                                                    onClick={() => handleEdit(p.id)}
+                                                    className="cursor-pointer p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors">
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                </button>
+                                                <button
+                                                    title="Eliminar"
+                                                    onClick={() => handleDelete(p.id)}
+                                                    className="cursor-pointer p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    )}
+                                </div>
+                    ))}
                 </div>
+                    )}
             </div>
-            {showDeleteModal && (
+        </div >
+            { showDeleteModal && (
                 <ConfirmModal title="Eliminar Producto"
                     description="Estas seguro de que deseas eliminar este producto? Esta acción no se puede deshacer."
                     success="Eliminar Producto" success_function={deleteProduct}
                     cancel="Cancelar" cancel_function={() => setShowDeleteModal(false)}
                 />
-            )}
+            )
+}
         </>
     );
 }

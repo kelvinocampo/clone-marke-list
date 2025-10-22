@@ -317,6 +317,7 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         onChange={handleChange}
                                         required
                                         min="0"
+                                        max="1000000000"
                                         className={classNames.input}
                                         step="0.01"
                                     />
