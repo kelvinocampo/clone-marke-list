@@ -139,13 +139,18 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                     <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6">
                         <div className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                </svg>
+                                {productUpdating ?
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg> :
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                    </svg>
+                                }
                             </div>
                             <div>
                                 <h2 className="text-2xl font-bold text-white">{productUpdating ? 'Editar' : 'Crear'} Producto</h2>
-                                <p className="text-indigo-100 text-sm">Completa la información del nuevo producto</p>
+                                <p className="text-indigo-100 text-sm">{productUpdating ? 'Edita la infomacion de tu producto' : 'Completa la información del nuevo producto'}</p>
                             </div>
                         </div>
                     </div>
