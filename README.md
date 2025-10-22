@@ -1,12 +1,6 @@
-¡Claro\! Un buen archivo `README.md` es esencial para documentar tu proyecto, especialmente uno en construcción con una pila tecnológica moderna.
+# 🚀 Marke List - Gestión de Productos
 
-Aquí tienes una plantilla completa y profesional para tu repositorio, incluyendo secciones sobre las tecnologías, el estado actual y las instrucciones de configuración local.
-
------
-
-# 🚀 [Nombre de tu Repositorio] - Gestión de Productos
-
-Este es un proyecto moderno de gestión de productos desarrollado con el *stack* T3 (Next.js, TypeScript y Tailwind CSS), con autenticación de usuarios a través de Google y persistencia de datos en Firebase. El proyecto está desplegado en Vercel.
+Este es un proyecto moderno de gestión de productos desarrollado con el *stack* T3 (Next.js, TypeScript y Tailwind CSS), con autenticación de usuarios a través de Google. El proyecto está desplegado en Vercel.
 
 **Estado del Proyecto:** 🛠️ **En Construcción**
 
@@ -35,7 +29,7 @@ La aplicación está construida con las siguientes herramientas y tecnologías:
 ### 🔐 Autenticación y Seguridad
 
   * **Google Sign-In:** Autenticación de usuarios utilizando Firebase Authentication (OAuth con Google).
-  * **Acceso Controlado:** Solo los usuarios autenticados pueden acceder y gestionar los productos.
+  <!-- * **Acceso Controlado:** Solo los usuarios autenticados pueden acceder y gestionar los productos. -->
 
 -----
 
