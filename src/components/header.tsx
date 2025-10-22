@@ -151,7 +151,7 @@ export default function Header() {
                         <span className="font-medium">Crear Producto</span>
                       </button>
 
-                      <button
+                      {/* <button
                         onClick={() => handleMenuAction("resumen-meses", 'products')}
                         className="w-full text-left px-4 py-2.5 text-gray-700 hover:bg-indigo-50 transition-colors flex items-center gap-3"
                       >
@@ -161,14 +161,14 @@ export default function Header() {
                           </svg>
                         </div>
                         <span className="font-medium">Resumen Meses</span>
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Sales Menu */}
-              <div className="relative" ref={salesRef}>
+              {/* <div className="relative" ref={salesRef}>
                 <button
                   onClick={() => {
                     setOpenSales(!openSales);
@@ -239,7 +239,7 @@ export default function Header() {
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
 
               {/* User Profile Menu */}
               <div className="relative ml-2" ref={profileRef}>
@@ -291,7 +291,7 @@ export default function Header() {
                       </div>
                     ) : (
                       <div className="py-2">
-                        <button
+                        {/* <button
                           onClick={() => router.push("/profile")}
                           className="w-full text-left px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3"
                         >
@@ -314,7 +314,7 @@ export default function Header() {
                             </svg>
                           </div>
                           <span className="font-medium">Configuración</span>
-                        </button>
+                        </button> */}
 
                         <div className="border-t border-gray-100 mt-2">
                           <button
