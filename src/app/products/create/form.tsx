@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/header";
 import { twMerge } from 'tailwind-merge'
+import { useDatalist } from "@/hooks/useDatalist";
 
 interface Producto {
     id?: number;
@@ -14,17 +15,13 @@ interface Producto {
     precio: number;
 }
 
-interface CreateProductProps {
-    onProductCreated?: (producto: Producto & { id: number }) => void;
-}
-
 const classNames = {
     input: 'text-black w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all',
     select: 'appearance-none bg-white text-gray-500',
     option: ''
 }
 
-export default function CreateProduct({ onProductCreated }: CreateProductProps) {
+export default function CreateProduct() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const productUpdating = searchParams.get("product");
@@ -38,7 +35,7 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
         precio: "",
     });
 
-    useState(() => {
+    useEffect(() => {
         if (productUpdating) {
             const productosGuardados = JSON.parse(localStorage.getItem("products") || "[]");
             const productoAEditar = productosGuardados.find((p: Producto) => p.id === Number(productUpdating));
@@ -53,12 +50,7 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                 });
             }
         }
-    });
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
-
+    }, []);
 
     const handleAction = (e: React.FormEvent) => {
         e.preventDefault();
@@ -68,6 +60,113 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
         } else {
             handleCreate();
         }
+    };
+
+    const { input: tiendaInput, setInput: setTiendaInput, showDropdown: showTiendaDropdown, setShowDropdown: setShowTiendaDropdown, inputRef: tiendaInputRef, dropdownRef: tiendaDropdownRef } = useDatalist();
+    const { input: categoriaInput, setInput: setCategoriaInput, showDropdown: showCategoriaDropdown, setShowDropdown: setShowCategoriaDropdown, inputRef: categoriaInputRef, dropdownRef: categoriaDropdownRef } = useDatalist();
+    const { input: marcaInput, setInput: setMarcaInput, showDropdown: showMarcaDropdown, setShowDropdown: setShowMarcaDropdown, inputRef: marcaInputRef, dropdownRef: marcaDropdownRef } = useDatalist();
+
+    const [productos, setProductos] = useState<Producto[]>([]);
+
+    // Inicializar productos del local storage
+    useEffect(() => {
+        const productosGuardados = JSON.parse(localStorage.getItem("products") || "[]");
+        setProductos(productosGuardados);
+    }, []);
+
+    // Cerrar dropdowns al hacer click fuera
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (marcaDropdownRef.current && !marcaDropdownRef.current.contains(event.target as Node) &&
+                !marcaInputRef.current?.contains(event.target as Node)) {
+                setShowMarcaDropdown(false);
+            }
+            if (tiendaDropdownRef.current && !tiendaDropdownRef.current.contains(event.target as Node) &&
+                !tiendaInputRef.current?.contains(event.target as Node)) {
+                setShowTiendaDropdown(false);
+            }
+            if (categoriaDropdownRef.current && !categoriaDropdownRef.current.contains(event.target as Node) &&
+                !categoriaInputRef.current?.contains(event.target as Node)) {
+                setShowCategoriaDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Obtener marcas únicas
+    const marcasUnicas = Array.from(new Set(productos.map(p => p.marca))).sort();
+
+    // Obtener tiendas únicas
+    const tiendasUnicas = Array.from(new Set(productos.map(p => p.tienda))).sort();
+
+    // Obtener cateorias únicas
+    const categoriasUnicas = Array.from(new Set(productos.map(p => p.categoria))).sort();
+
+    // Filtrar marcas según el input
+    const marcasFiltradas = marcasUnicas.filter(marca =>
+        marca.toLowerCase().includes(marcaInput.toLowerCase())
+    );
+
+    // Filtrar categorias según el input
+    const categoriasFiltradas = categoriasUnicas.filter(categoria =>
+        categoria.toLowerCase().includes(categoriaInput.toLowerCase())
+    );
+
+    // Filtrar tiendas según el input
+    const tiendasFiltradas = tiendasUnicas.filter(tienda =>
+        tienda.toLowerCase().includes(tiendaInput.toLowerCase())
+    );
+
+    // Agregar tienda al filtro
+    const agregarTienda = (tienda: string) => {
+        if (tienda) {
+            form.tienda = tienda
+            setTiendaInput("");
+            setShowTiendaDropdown(false);
+        }
+    };
+
+    // Agregar categoria al filtro
+    const agregarCategoria = (categoria: string) => {
+        if (categoria) {
+            form.categoria = categoria
+            setCategoriaInput("");
+            setShowCategoriaDropdown(false);
+        }
+    };
+
+    // Agregar marca al filtro
+    const agregarMarca = (marca: string) => {
+        if (marca) {
+            form.marca = marca
+            setMarcaInput("");
+            setShowMarcaDropdown(false);
+        }
+    };
+
+    // Cerrar dropdowns al hacer click fuera
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (tiendaDropdownRef.current && !tiendaDropdownRef.current.contains(event.target as Node) &&
+                !tiendaInputRef.current?.contains(event.target as Node)) {
+                setShowTiendaDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Inicializar productos del local storage
+    useEffect(() => {
+        const productosGuardados = JSON.parse(localStorage.getItem("products") || "[]");
+        setProductos(productosGuardados);
+    }, []);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleUpdate = () => {
@@ -105,11 +204,6 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
         const productosGuardados = JSON.parse(localStorage.getItem("products") || "[]");
         const productosActualizados = [...productosGuardados, nuevoProducto];
         localStorage.setItem("products", JSON.stringify(productosActualizados));
-
-        // Callback opcional
-        if (onProductCreated) {
-            onProductCreated(nuevoProducto);
-        }
 
         // Limpiar formulario
         setForm({
@@ -156,7 +250,7 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                     </div>
 
                     {/* Formulario */}
-                    <form onSubmit={handleAction} className="p-8">
+                    <form onSubmit={handleAction} className="p-8" autoComplete="off">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Tienda */}
                             <div className="space-y-2">
@@ -170,14 +264,35 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         </svg>
                                     </div>
                                     <input
+                                        ref={tiendaInputRef}
                                         type="text"
                                         name="tienda"
                                         placeholder="Ej: Tienda dona concha"
                                         value={form.tienda}
-                                        onChange={handleChange}
+                                        onChange={(e) => { handleChange(e); setTiendaInput(e.target.value) }}
                                         required
                                         className={classNames.input}
+                                        onFocus={() => setShowTiendaDropdown(true)}
                                     />
+                                    {showTiendaDropdown && tiendasFiltradas.length > 0 && (
+                                        <div
+                                            ref={tiendaDropdownRef}
+                                            className="absolute z-20 w-full mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto"
+                                        >
+                                            {tiendasFiltradas.map((tienda) => (
+                                                <div
+                                                    key={tienda}
+                                                    onClick={() => agregarTienda(tienda)}
+                                                    className="cursor-pointer px-4 py-2.5 hover:bg-purple-50 transition-colors flex items-center gap-2 border-b border-gray-100 last:border-b-0"
+                                                >
+                                                    <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                    </svg>
+                                                    <span className="text-gray-700">{tienda}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -193,14 +308,35 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         </svg>
                                     </div>
                                     <input
+                                        ref={categoriaInputRef}
+                                        onFocus={() => setShowCategoriaDropdown(true)}
                                         type="text"
                                         name="categoria"
                                         placeholder="Ej: Tubérculos"
                                         value={form.categoria}
-                                        onChange={handleChange}
+                                        onChange={(e) => { handleChange(e); setCategoriaInput(e.target.value) }}
                                         className={classNames.input}
                                         required
                                     />
+                                    {showCategoriaDropdown && categoriasFiltradas.length > 0 && (
+                                        <div
+                                            ref={categoriaDropdownRef}
+                                            className="absolute z-20 w-full mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto"
+                                        >
+                                            {categoriasFiltradas.map((categoria) => (
+                                                <div
+                                                    key={categoria}
+                                                    onClick={() => agregarCategoria(categoria)}
+                                                    className="cursor-pointer px-4 py-2.5 hover:bg-purple-50 transition-colors flex items-center gap-2 border-b border-gray-100 last:border-b-0"
+                                                >
+                                                    <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                                    </svg>
+                                                    <span className="text-gray-700">{categoria}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -243,10 +379,32 @@ export default function CreateProduct({ onProductCreated }: CreateProductProps) 
                                         name="marca"
                                         placeholder="Ej: Mister Potato"
                                         value={form.marca}
-                                        onChange={handleChange}
+                                        onChange={(e) => { handleChange(e); setMarcaInput(e.target.value) }}
                                         className={classNames.input}
                                         required
+                                        ref={marcaInputRef}
+                                        onFocus={() => setShowMarcaDropdown(true)}
+
                                     />
+                                    {showMarcaDropdown && marcasFiltradas.length > 0 && (
+                                        <div
+                                            ref={marcaDropdownRef}
+                                            className="absolute z-20 w-full mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto"
+                                        >
+                                            {marcasFiltradas.map((marca) => (
+                                                <div
+                                                    key={marca}
+                                                    onClick={() => agregarMarca(marca)}
+                                                    className="cursor-pointer px-4 py-2.5 hover:bg-indigo-50 transition-colors flex items-center gap-2 border-b border-gray-100 last:border-b-0"
+                                                >
+                                                    <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                                    </svg>
+                                                    <span className="text-gray-700">{marca}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
