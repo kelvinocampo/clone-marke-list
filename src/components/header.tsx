@@ -86,25 +86,26 @@ export default function Header() {
   return (
     <>
       <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <button
               onClick={() => router.push("/")}
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
+              className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity cursor-pointer"
             >
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Clone Marke List
+              <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="hidden xs:inline">Clone Marke List</span>
+                <span className="xs:hidden">CML</span>
               </h1>
             </button>
 
             {/* Navigation Menu */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               {/* Products Menu */}
               <div className="relative" ref={productsRef}>
                 <button
@@ -113,19 +114,19 @@ export default function Header() {
                     setOpenSales(false);
                     setOpenProfile(false);
                   }}
-                  className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-indigo-50 rounded-lg transition-all duration-200 font-medium"
+                  className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 text-gray-700 hover:bg-indigo-50 rounded-lg transition-all duration-200 font-medium"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
-                  <span>Productos</span>
-                  <svg className={`w-4 h-4 transition-transform ${openProducts ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="text-sm sm:text-base hidden sm:inline">Productos</span>
+                  <svg className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${openProducts ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
 
                 {openProducts && (
-                  <div className="absolute left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 animate-fade-in overflow-hidden">
+                  <div className="absolute left-0 sm:left-auto right-0 mt-2 w-56 sm:w-64 bg-white rounded-xl shadow-xl border border-gray-200 animate-fade-in overflow-hidden">
                     <div className="py-2">
                       <button
                         onClick={() => handleMenuAction("productos", 'products')}
@@ -136,7 +137,7 @@ export default function Header() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                           </svg>
                         </div>
-                        <span className="font-medium">Ver Productos</span>
+                        <span className="font-medium text-sm sm:text-base">Ver Productos</span>
                       </button>
 
                       <button
@@ -148,25 +149,14 @@ export default function Header() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                           </svg>
                         </div>
-                        <span className="font-medium">Crear Producto</span>
+                        <span className="font-medium text-sm sm:text-base">Crear Producto</span>
                       </button>
-
-                      {/* <button
-                        onClick={() => handleMenuAction("resumen-meses", 'products')}
-                        className="w-full text-left px-4 py-2.5 text-gray-700 hover:bg-indigo-50 transition-colors flex items-center gap-3"
-                      >
-                        <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                        <span className="font-medium">Resumen Meses</span>
-                      </button> */}
                     </div>
                   </div>
                 )}
               </div>
 
+              
               {/* Sales Menu */}
               {/* <div className="relative" ref={salesRef}>
                 <button
@@ -242,16 +232,16 @@ export default function Header() {
               </div> */}
 
               {/* User Profile Menu */}
-              <div className="relative ml-2" ref={profileRef}>
+              <div className="relative ml-1 sm:ml-2" ref={profileRef}>
                 <button
                   onClick={() => {
                     setOpenProfile(!openProfile);
                     setOpenProducts(false);
                     setOpenSales(false);
                   }}
-                  className="flex items-center gap-3 hover:bg-gray-100 rounded-xl px-3 py-2 transition-all duration-200"
+                  className="flex items-center gap-2 sm:gap-3 hover:bg-gray-100 rounded-xl px-2 sm:px-3 py-1.5 sm:py-2 transition-all duration-200"
                 >
-                  <div className="hidden sm:flex flex-col items-end">
+                  <div className="hidden md:flex flex-col items-end">
                     <span className="text-sm font-semibold text-gray-800">
                       {user?.displayName?.split(" ")[0] || "Invitado"}
                     </span>
@@ -265,26 +255,26 @@ export default function Header() {
                       alt="Avatar"
                       width={40}
                       height={40}
-                      className="w-10 h-10 rounded-full border-2 border-indigo-200 object-cover"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-indigo-200 object-cover"
                     />
                     {user && (
-                      <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
                     )}
                   </div>
                 </button>
 
                 {openProfile && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 animate-fade-in overflow-hidden">
+                  <div className="absolute right-0 mt-2 w-56 sm:w-64 bg-white rounded-xl shadow-xl border border-gray-200 animate-fade-in overflow-hidden">
                     <div className="px-4 py-3 border-b border-gray-100">
-                      <p className="font-semibold text-gray-800">{user?.displayName || "Invitado"}</p>
-                      <p className="text-sm text-gray-500 mt-0.5">{user?.email || "Sin sesión iniciada"}</p>
+                      <p className="font-semibold text-gray-800 text-sm sm:text-base">{user?.displayName || "Invitado"}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-0.5 truncate">{user?.email || "Sin sesión iniciada"}</p>
                     </div>
 
                     {!user ? (
                       <div className="p-4">
                         <button
                           onClick={() => router.push("/login")}
-                          className="cursor-pointer w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg font-semibold transition"
+                          className="cursor-pointer w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg font-semibold transition text-sm sm:text-base"
                         >
                           Iniciar sesión
                         </button>
@@ -300,10 +290,10 @@ export default function Header() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                           </div>
-                          <span className="font-medium">Mi Perfil</span>
+                          <span className="font-medium text-sm sm:text-base">Mi Perfil</span>
                         </button>
 
-                        {/* <button
+                                                {/* <button
                           onClick={() => router.push("/settings")}
                           className="w-full text-left px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3"
                         >
@@ -316,6 +306,7 @@ export default function Header() {
                           <span className="font-medium">Configuración</span>
                         </button> */}
 
+
                         <div className="border-t border-gray-100">
                           <button
                             onClick={handleLogout}
@@ -326,7 +317,7 @@ export default function Header() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                               </svg>
                             </div>
-                            <span className="font-medium">Cerrar sesión</span>
+                            <span className="font-medium text-sm sm:text-base">Cerrar sesión</span>
                           </button>
                         </div>
                       </div>
