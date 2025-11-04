@@ -13,7 +13,8 @@ export default function Header() {
   const router = useRouter();
   const [openProfile, setOpenProfile] = useState(false);
   const [openProducts, setOpenProducts] = useState(false);
-  const [openSales, setOpenSales] = useState(false);
+  const [, setOpenSales] = useState(false);
+  // const [openSales, setOpenSales] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const profileRef = useRef<HTMLDivElement>(null);
@@ -99,8 +100,8 @@ export default function Header() {
                 </svg>
               </div>
               <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                <span className="hidden xs:inline">Clone Marke List</span>
-                <span className="xs:hidden">CML</span>
+                <span className="hidden sm:inline">Clone Marke List</span>
+                <span className="sm:hidden">CML</span>
               </h1>
             </button>
 

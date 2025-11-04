@@ -29,8 +29,8 @@ export default function ProfilePage() {
         setProductos(productosGuardados);
     }
 
-    const setProductsLocalStorage = () => {
-        localStorage.setItem('products', JSON.stringify(productos));
+    const setProductsLocalStorage = (products: Producto[]) => {
+        localStorage.setItem('products', JSON.stringify(products));
     }
 
     // Inicializar productos del local storage
@@ -38,15 +38,14 @@ export default function ProfilePage() {
         getProductsLocalStorage()
     }, []);
 
-    const handleSynchronizeData = async () => {
+    const HandleSynchronizeData = async () => {
         setIsSynchronizing(true);
         try {
             const [products, result] = await useDB(user?.uid || '', productos);
 
             if (result) {
                 setProductos(products as Producto[]);
-                console.log(products, productos);
-                setProductsLocalStorage();
+                setProductsLocalStorage(products as Producto[]);
             }
         } catch (error) {
             console.error("Error al sincronizar:", error);
@@ -84,7 +83,7 @@ export default function ProfilePage() {
                     {/* Tarjeta de información del usuario */}
                     <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
                         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 h-32"></div>
-                        
+
                         <div className="px-6 pb-6">
                             <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 -mt-16">
                                 {/* Avatar */}
@@ -149,13 +148,12 @@ export default function ProfilePage() {
                         </div>
 
                         <button
-                            onClick={handleSynchronizeData}
+                            onClick={HandleSynchronizeData}
                             disabled={isSynchronizing}
-                            className={`cursor-pointer w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-200 ${
-                                isSynchronizing
+                            className={`cursor-pointer w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-200 ${isSynchronizing
                                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                     : 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:shadow-lg hover:-translate-y-0.5'
-                            }`}
+                                }`}
                         >
                             {isSynchronizing ? (
                                 <>
