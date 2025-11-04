@@ -15,7 +15,7 @@ export default function Header() {
   const [openProducts, setOpenProducts] = useState(false);
   const [openSales, setOpenSales] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  
+
   const profileRef = useRef<HTMLDivElement>(null);
   const productsRef = useRef<HTMLDivElement>(null);
   const salesRef = useRef<HTMLDivElement>(null);
@@ -290,10 +290,10 @@ export default function Header() {
                         </button>
                       </div>
                     ) : (
-                      <div className="py-2">
-                        {/* <button
+                      <div>
+                        <button
                           onClick={() => router.push("/profile")}
-                          className="w-full text-left px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3"
+                          className="cursor-pointer w-full text-left px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3"
                         >
                           <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                             <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -303,7 +303,7 @@ export default function Header() {
                           <span className="font-medium">Mi Perfil</span>
                         </button>
 
-                        <button
+                        {/* <button
                           onClick={() => router.push("/settings")}
                           className="w-full text-left px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3"
                         >
@@ -316,10 +316,10 @@ export default function Header() {
                           <span className="font-medium">Configuración</span>
                         </button> */}
 
-                        <div className="border-t border-gray-100 mt-2">
+                        <div className="border-t border-gray-100">
                           <button
                             onClick={handleLogout}
-                            className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors flex items-center gap-3"
+                            className="cursor-pointer w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors flex items-center gap-3"
                           >
                             <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
                               <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

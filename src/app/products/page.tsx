@@ -8,7 +8,7 @@ import ConfirmModal from "@/components/confirm";
 import { truncateText } from "@/helpers/text";
 
 interface Producto {
-    id: number;
+    id: string;
     tienda: string;
     creacion: Date;
     categoria: string;
@@ -23,7 +23,7 @@ export default function ProductsPage() {
     const router = useRouter();
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [productSelected, setProductSelected] = useState<number>(0);
+    const [productSelected, setProductSelected] = useState<string>('');
     const [productos, setProductos] = useState<Producto[]>([]);
 
     // Estados para filtros
@@ -150,7 +150,7 @@ export default function ProductsPage() {
         setShowDeleteModal(false);
     };
 
-    const handleDelete = (id: number) => {
+    const handleDelete = (id: string) => {
         setProductSelected(id);
         setShowDeleteModal(true);
     };
@@ -160,7 +160,7 @@ export default function ProductsPage() {
         router.push("/products/create");
     };
 
-    const handleEdit = (id: number) => {
+    const handleEdit = (id: string) => {
         router.push("/products/update?product=" + id);
     };
 

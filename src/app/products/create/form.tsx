@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge'
 import { useDatalist } from "@/hooks/useDatalist";
 
 interface Producto {
-    id?: number;
+    id?: string;
     tienda: string;
     categoria: string;
     nombre: string;
@@ -38,7 +38,7 @@ export default function CreateProduct() {
     useEffect(() => {
         if (productUpdating) {
             const productosGuardados = JSON.parse(localStorage.getItem("products") || "[]");
-            const productoAEditar = productosGuardados.find((p: Producto) => p.id === Number(productUpdating));
+            const productoAEditar = productosGuardados.find((p: Producto) => p.id === productUpdating);
             if (productoAEditar) {
                 setForm({
                     tienda: productoAEditar.tienda,
@@ -50,7 +50,7 @@ export default function CreateProduct() {
                 });
             }
         }
-    }, []);
+    }, [productUpdating]);
 
     const handleAction = (e: React.FormEvent) => {
         e.preventDefault();
@@ -172,7 +172,7 @@ export default function CreateProduct() {
     const handleUpdate = () => {
         const productosGuardados = JSON.parse(localStorage.getItem("products") || "[]");
         const productosActualizados = productosGuardados.map((p: Producto) => {
-            if (p.id === Number(productUpdating)) {
+            if (p.id === productUpdating) {
                 return {
                     ...p,
                     tienda: form.tienda,
